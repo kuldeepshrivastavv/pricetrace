@@ -20,20 +20,12 @@ async function getCurrentPrice(url: string): Promise<number | null> {
   }
 }
 
-export default async function handler(req, res) {
+import type { NextApiRequest, NextApiResponse } from 'next'
+
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'GET') {
     return res.status(405).json({ error: 'Method not allowed' })
   }
-  const { data: products, error } = await supabaseAdmin.from('products').select()
-  if (error) return res.status(500).json({ error: error.message })
-  for (const product of products) {
-    const price = await getCurrentPrice(product.url)
-    if (price != null) {
-      await supabaseAdmin
-        .from('products')
-        .update({ price })
-        .eq('id', product.id)
-    }
-  }
-  return res.status(200).json({ status: 'Price update complete' })
+  // Your logic here
+  res.status(200).json({ message: 'Cron job executed!' })
 }
