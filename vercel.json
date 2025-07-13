@@ -1,7 +1,8 @@
 {
   "functions": {
-    "api/cron/route.ts": {
-      "schedule": "0 7 * * *"
+    "api/cron.ts": {
+      "runtime": "nodejs18.x",
+      "schedule": "0 9 * * *"
     }
   }
 }
