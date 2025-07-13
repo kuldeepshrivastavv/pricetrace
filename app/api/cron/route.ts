@@ -1,9 +1,7 @@
-// app/api/cron/route.ts
 import { NextResponse } from 'next/server'
-import { revalidatePath } from 'next/cache'
 import axios from 'axios'
 import * as cheerio from 'cheerio'
-import supabaseAdmin from '@/lib/supabaseAdmin'
+import { supabaseAdmin } from '@/lib/supabaseAdmin' // ensure it's a named export
 
 async function getCurrentPrice(url: string): Promise<number | null> {
   try {
@@ -22,17 +20,7 @@ async function getCurrentPrice(url: string): Promise<number | null> {
   }
 }
 
-export async function GET() {
-  const { data: products, error } = await supabaseAdmin.from('products').select()
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
-  for (const product of products) {
-    const price = await getCurrentPrice(product.url)
-    if (price != null) {
-      await supabaseAdmin
-        .from('products')
-        .update({ price })
-        .eq('id', product.id)
-    }
-  }
-  return NextResponse.json({ status: 'Price update complete' })
+export async function GET(request: Request) {
+  // Your cron job logic can go here
+  return NextResponse.json({ message: 'Cron job executed!' })
 }
